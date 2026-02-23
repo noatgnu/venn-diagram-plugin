@@ -4,6 +4,7 @@ plugin:
   name: "Venn Diagram"
   description: "Generate Venn diagrams for set comparison"
   version: "1.0.0"
+  repository: "https://github.com/noatgnu/venn-diagram-plugin"
   author: "CauldronGO Team"
   category: "visualization"
   icon: "schema"
