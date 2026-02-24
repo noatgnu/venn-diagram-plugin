@@ -1,5 +1,19 @@
 # Venn Diagram
 
+
+## Installation
+
+**[⬇️ Click here to install in Cauldron](http://localhost:50060/install?repo=https%3A%2F%2Fgithub.com%2Fnoatgnu%2Fvenn-diagram-plugin)** _(requires Cauldron to be running)_
+
+> **Repository**: `https://github.com/noatgnu/venn-diagram-plugin`
+
+**Manual installation:**
+
+1. Open Cauldron
+2. Go to **Plugins** → **Install from Repository**
+3. Paste: `https://github.com/noatgnu/venn-diagram-plugin`
+4. Click **Install**
+
 **ID**: `venn-diagram`  
 **Version**: 1.0.0  
 **Category**: visualization  
@@ -11,8 +25,9 @@ Generate Venn diagrams for set comparison
 
 ## Runtime
 
-- **Type**: `r`
-- **Script**: `venn_diagram.R`
+- **Environments**: `r`
+
+- **Entrypoint**: `venn_diagram.R`
 
 ## Inputs
 
@@ -86,23 +101,29 @@ This plugin generates 1 plot(s):
 
 ## Requirements
 
-- **R**: >=4.0
-- **Packages**:
-  - VennDiagram
-  - grid
+- **R Version**: >=4.0
+
+### Package Dependencies (Inline)
+
+Packages are defined inline in the plugin configuration:
+
+- `VennDiagram`
+- `grid`
+
+> **Note**: When you create a custom environment for this plugin, these dependencies will be automatically installed.
 
 ## Example Data
 
 This plugin includes example data for testing:
 
 ```yaml
+  input_file: venn_diagram/venn_example.txt
+  sample_cols_source: venn_diagram/venn_example.txt
+  sample_cols: [Control Treatment_A Treatment_B]
   set_names: Control,Treatment A,Treatment B
   threshold: 0
   use_presence: true
   alpha: 0.5
-  input_file: venn_diagram/venn_example.txt
-  sample_cols_source: venn_diagram/venn_example.txt
-  sample_cols: [Control Treatment_A Treatment_B]
 ```
 
 Load example data by clicking the **Load Example** button in the UI.
