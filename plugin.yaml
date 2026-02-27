@@ -51,10 +51,10 @@ inputs:
 
   - name: "fill_colors"
     label: "Fill Colors"
-    type: "text"
+    type: "color-map"
     required: false
-    placeholder: "#FF0000,#00FF00,#0000FF"
-    description: "Comma-separated hex colors for each set"
+    keysFrom: "sample_cols"
+    description: "Assign colors to each set in the Venn diagram"
 
   - name: "alpha"
     label: "Transparency (Alpha)"
@@ -111,7 +111,9 @@ execution:
       flag: "--use_presence"
       value: "true"
       when: "true"
-    fill_colors: "--fill_colors"
+    fill_colors:
+      flag: "--fill_colors"
+      transform: "color-map"
     alpha: "--alpha"
 
   outputDir: "--output_folder"

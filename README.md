@@ -38,7 +38,7 @@ Generate Venn diagrams for set comparison
 | `set_names` | Set Names | text | No | - | Always visible |
 | `threshold` | Threshold | number (min: 0, max: 100) | No | 0 | Always visible |
 | `use_presence` | Use Presence/Absence | boolean | No | true | Always visible |
-| `fill_colors` | Fill Colors | text | No | - | Always visible |
+| `fill_colors` | Fill Colors | color-map (keys from `sample_cols`) | No | - | Always visible |
 | `alpha` | Transparency (Alpha) | number (min: 0, max: 1, step: 0) | No | 0.5 | Always visible |
 
 ### Input Details
@@ -71,9 +71,10 @@ Use binary presence/absence instead of values
 
 #### Fill Colors (`fill_colors`)
 
-Comma-separated hex colors for each set
+Assign colors to each set in the Venn diagram
 
-- **Placeholder**: `#FF0000,#00FF00,#0000FF`
+- **Input Type**: Color map for assigning colors to categories
+- **Keys From**: `sample_cols` (categories are derived from this input)
 
 #### Transparency (Alpha) (`alpha`)
 
@@ -117,13 +118,13 @@ Packages are defined inline in the plugin configuration:
 This plugin includes example data for testing:
 
 ```yaml
+  threshold: 0
+  use_presence: true
+  alpha: 0.5
   input_file: venn_diagram/venn_example.txt
   sample_cols_source: venn_diagram/venn_example.txt
   sample_cols: [Control Treatment_A Treatment_B]
   set_names: Control,Treatment A,Treatment B
-  threshold: 0
-  use_presence: true
-  alpha: 0.5
 ```
 
 Load example data by clicking the **Load Example** button in the UI.

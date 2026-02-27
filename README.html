@@ -192,7 +192,7 @@
 <tr>
 <td><code>fill_colors</code></td>
 <td>Fill Colors</td>
-<td>text</td>
+<td>color-map (keys from <code>sample_cols</code>)</td>
 <td>No</td>
 <td>-</td>
 <td>Always visible</td>
@@ -222,9 +222,10 @@
 <h4 id="use-presenceabsence-use-presence">Use Presence/Absence (<code>use_presence</code>)</h4>
 <p>Use binary presence/absence instead of values</p>
 <h4 id="fill-colors-fill-colors">Fill Colors (<code>fill_colors</code>)</h4>
-<p>Comma-separated hex colors for each set</p>
+<p>Assign colors to each set in the Venn diagram</p>
 <ul>
-<li><strong>Placeholder</strong>: <code>#FF0000,#00FF00,#0000FF</code></li>
+<li><strong>Input Type</strong>: Color map for assigning colors to categories</li>
+<li><strong>Keys From</strong>: <code>sample_cols</code> (categories are derived from this input)</li>
 </ul>
 <h4 id="transparency-alpha-alpha">Transparency (Alpha) (<code>alpha</code>)</h4>
 <p>Transparency of overlapping regions (0=transparent, 1=opaque)</p>
@@ -293,13 +294,13 @@
 </blockquote>
 <h2 id="example-data">Example Data</h2>
 <p>This plugin includes example data for testing:</p>
-<pre><code class="language-yaml">  sample_cols_source: venn_diagram/venn_example.txt
+<pre><code class="language-yaml">  alpha: 0.5
+  input_file: venn_diagram/venn_example.txt
+  sample_cols_source: venn_diagram/venn_example.txt
   sample_cols: [Control Treatment_A Treatment_B]
   set_names: Control,Treatment A,Treatment B
   threshold: 0
   use_presence: true
-  alpha: 0.5
-  input_file: venn_diagram/venn_example.txt
 </code></pre>
 <p>Load example data by clicking the <strong>Load Example</strong> button in the UI.</p>
 <h2 id="usage">Usage</h2>
