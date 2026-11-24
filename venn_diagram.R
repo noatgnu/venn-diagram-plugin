@@ -29,6 +29,7 @@ params <- parse_args(args)
 
 file_path <- params$file_path
 output_folder <- params$output_folder
+id_col <- params$id_col
 sample_cols <- strsplit(params$sample_cols, ",")[[1]]
 set_names <- if(is.null(params$set_names) || params$set_names == "") NULL else strsplit(params$set_names, ",")[[1]]
 threshold <- ifelse(is.null(params$threshold), 0, as.numeric(params$threshold))
@@ -38,6 +39,7 @@ alpha <- ifelse(is.null(params$alpha), 0.5, as.numeric(params$alpha))
 
 cat("Parameters received:\n")
 cat(paste("  File path:", file_path, "\n"))
+cat(paste("  ID column:", id_col, "\n"))
 cat(paste("  Sample cols:", paste(sample_cols, collapse=", "), "\n"))
 cat(paste("  Set names:", ifelse(is.null(set_names), "NULL", paste(set_names, collapse=", ")), "\n"))
 cat(paste("  Threshold:", threshold, "\n"))
@@ -71,6 +73,14 @@ for (col in sample_cols) {
   }
 }
 
+if (is.null(id_col) || id_col == "") {
+  stop("id_col is required")
+}
+if (!(id_col %in% colnames(data))) {
+  stop(paste("ID column not found:", id_col))
+}
+feature_ids <- as.character(data[[id_col]])
+
 cat(paste("Processing", nrow(data), "features\n"))
 cat(paste("Number of sets:", length(sample_cols), "\n"))
 cat(paste("Set names:", paste(set_names, collapse = ", "), "\n"))
@@ -87,30 +97,26 @@ for (i in seq_along(sample_cols)) {
     valid_idx <- which(col_data > threshold)
   }
 
-  if (!is.null(rownames(data))) {
-    sets_list[[set_names[i]]] <- rownames(data)[valid_idx]
-  } else {
-    sets_list[[set_names[i]]] <- valid_idx
-  }
+  sets_list[[set_names[i]]] <- feature_ids[valid_idx]
 
   cat(paste("Set", set_names[i], ":", length(valid_idx), "features\n"))
 }
 
+color_by_key <- list()
 if (fill_colors != "") {
-  colors <- strsplit(fill_colors, ",")[[1]]
-  if (length(colors) != length(sample_cols)) {
-    cat("Warning: Number of colors doesn't match number of sets, using default colors\n")
-    fill_colors <- ""
+  for (pair in strsplit(fill_colors, ",")[[1]]) {
+    kv <- strsplit(pair, ":")[[1]]
+    if (length(kv) == 2) {
+      color_by_key[[kv[1]]] <- kv[2]
+    }
   }
-} else {
-  fill_colors <- ""
 }
 
-if (fill_colors == "") {
-  default_colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd")
-  colors <- default_colors[1:length(sample_cols)]
-} else {
-  colors <- strsplit(fill_colors, ",")[[1]]
+default_colors <- c("#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd")
+colors <- character(length(sample_cols))
+for (i in seq_along(sample_cols)) {
+  mapped <- color_by_key[[sample_cols[i]]]
+  colors[i] <- if (!is.null(mapped)) mapped else default_colors[i]
 }
 
 if (!dir.exists(output_folder)) {

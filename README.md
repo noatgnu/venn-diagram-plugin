@@ -15,7 +15,7 @@
 4. Click **Install**
 
 **ID**: `venn-diagram`  
-**Version**: 1.0.0  
+**Version**: 1.1.0  
 **Category**: visualization  
 **Author**: CauldronGO Team
 
@@ -34,12 +34,13 @@ Generate Venn diagrams for set comparison
 | Name | Label | Type | Required | Default | Visibility |
 |------|-------|------|----------|---------|------------|
 | `input_file` | Input File | file | Yes | - | Always visible |
+| `id_col` | ID Column | column-selector (single) | Yes | - | Always visible |
 | `sample_cols` | Sample Columns | column-selector (multiple) | Yes | - | Always visible |
 | `set_names` | Set Names | text | No | - | Always visible |
 | `threshold` | Threshold | number (min: 0, max: 100) | No | 0 | Always visible |
 | `use_presence` | Use Presence/Absence | boolean | No | true | Always visible |
 | `fill_colors` | Fill Colors | color-map (keys from `sample_cols`) | No | - | Always visible |
-| `alpha` | Transparency (Alpha) | number (min: 0, max: 1, step: 0) | No | 0.5 | Always visible |
+| `alpha` | Transparency (Alpha) | number (min: 0, max: 1, step: 0.1) | No | 0.5 | Always visible |
 
 ### Input Details
 
@@ -47,6 +48,12 @@ Generate Venn diagrams for set comparison
 
 Data file containing sets to compare
 
+
+#### ID Column (`id_col`)
+
+Column holding the feature identifier (e.g. protein or gene ID) reported in the overlap and presence outputs
+
+- **Column Source**: `input_file`
 
 #### Sample Columns (`sample_cols`)
 
@@ -118,13 +125,14 @@ Packages are defined inline in the plugin configuration:
 This plugin includes example data for testing:
 
 ```yaml
+  set_names: Control,Treatment A,Treatment B
   threshold: 0
   use_presence: true
   alpha: 0.5
   input_file: venn_diagram/venn_example.txt
   sample_cols_source: venn_diagram/venn_example.txt
+  id_col: Protein.ID
   sample_cols: [Control Treatment_A Treatment_B]
-  set_names: Control,Treatment A,Treatment B
 ```
 
 Load example data by clicking the **Load Example** button in the UI.

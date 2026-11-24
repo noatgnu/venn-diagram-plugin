@@ -3,7 +3,7 @@ plugin:
   id: "venn-diagram"
   name: "Venn Diagram"
   description: "Generate Venn diagrams for set comparison"
-  version: "1.0.0"
+  version: "1.1.0"
   repository: "https://github.com/noatgnu/venn-diagram-plugin"
   author: "CauldronGO Team"
   category: "visualization"
@@ -20,6 +20,14 @@ inputs:
     required: true
     accept: ".csv,.tsv,.txt"
     description: "Data file containing sets to compare"
+
+  - name: "id_col"
+    label: "ID Column"
+    type: "column-selector"
+    required: true
+    multiple: false
+    sourceFile: "input_file"
+    description: "Column holding the feature identifier (e.g. protein or gene ID) reported in the overlap and presence outputs"
 
   - name: "sample_cols"
     label: "Sample Columns"
@@ -102,6 +110,7 @@ plots:
 execution:
   argsMapping:
     input_file: "--file_path"
+    id_col: "--id_col"
     sample_cols:
       flag: "--sample_cols"
       transform: "comma-join"
@@ -129,6 +138,7 @@ example:
   values:
     input_file: "venn_diagram/venn_example.txt"
     sample_cols_source: "venn_diagram/venn_example.txt"
+    id_col: "Protein.ID"
     sample_cols:
       - "Control"
       - "Treatment_A"
