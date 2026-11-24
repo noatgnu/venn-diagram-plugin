@@ -123,15 +123,8 @@ if (!dir.exists(output_folder)) {
   dir.create(output_folder, recursive = TRUE)
 }
 
-is_webr <- exists("webr_shim_env") || Sys.getenv("WEBR") != "" || isTRUE(getOption("webr"))
-
-if (is_webr) {
-  output_file_png <- file.path(output_folder, "venn_diagram.png")
-  png(output_file_png, width = 10, height = 10, units = "in", res = 300)
-} else {
-  output_file_pdf <- file.path(output_folder, "venn_diagram.pdf")
-  pdf(output_file_pdf, width = 10, height = 10)
-}
+output_file_svg <- file.path(output_folder, "venn_diagram.svg")
+output_file_pdf <- file.path(output_folder, "venn_diagram.pdf")
 
 venn_obj <- venn.diagram(
   x = sets_list,
@@ -149,15 +142,13 @@ venn_obj <- venn.diagram(
   disable.logging = TRUE
 )
 
+svg(output_file_svg, width = 10, height = 10)
 grid.draw(venn_obj)
 dev.off()
 
-if (!is_webr) {
-  output_file_svg <- file.path(output_folder, "venn_diagram.svg")
-  svg(output_file_svg, width = 10, height = 10)
-  grid.draw(venn_obj)
-  dev.off()
-}
+pdf(output_file_pdf, width = 10, height = 10)
+grid.draw(venn_obj)
+dev.off()
 
 overlaps <- calculate.overlap(sets_list)
 
@@ -193,12 +184,8 @@ presence_file <- file.path(output_folder, "venn_presence.txt")
 write.table(presence_df, file = presence_file, sep = "\t", quote = FALSE, row.names = FALSE)
 
 cat("Venn diagram created successfully\n")
-if (is_webr) {
-  cat(paste("PNG output saved to:", output_file_png, "\n"))
-} else {
-  cat(paste("PDF output saved to:", output_file_pdf, "\n"))
-  cat(paste("SVG output saved to:", output_file_svg, "\n"))
-}
+cat(paste("SVG output saved to:", output_file_svg, "\n"))
+cat(paste("PDF output saved to:", output_file_pdf, "\n"))
 cat(paste("Summary saved to:", summary_file, "\n"))
 cat(paste("Presence matrix saved to:", presence_file, "\n"))
 cat(paste("Total unique features:", length(all_elements), "\n"))
